@@ -182,6 +182,10 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
                     <option value="">Status Atual: {item.status}</option>
                     <option value="Em Tratativa">Em Tratativa</option>
                     <option value="Aguardando Cliente">Aguardando Cliente</option>
+                    <option value="Aguardando Resposta do Fornecedor">Aguardando Resposta do Fornecedor</option>
+                    <option value="Em Análise Técnica">Em Análise Técnica</option>
+                    <option value="Recusado">Recusado</option>
+                    <option value="Reenviado ao Cliente">Reenviado ao Cliente</option>
                     <option value="Concluído">Concluído</option>
                     <option value="Cancelado">Cancelado</option>
                   </select>

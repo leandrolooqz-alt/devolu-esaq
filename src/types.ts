@@ -11,6 +11,10 @@ export type StatusDevolucao =
   | 'Pendente Ação'
   | 'Em Tratativa'
   | 'Aguardando Cliente'
+  | 'Aguardando Resposta do Fornecedor'
+  | 'Em Análise Técnica'
+  | 'Recusado'
+  | 'Reenviado ao Cliente'
   | 'Concluído'
   | 'Cancelado';
 
