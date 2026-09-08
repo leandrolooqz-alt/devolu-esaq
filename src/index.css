@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/*
+ * Paleta corporativa do Sistema de Logística Reversa.
+ * Substitui os tons "padrão de tutorial" do Tailwind (azul/verde/amarelo/vermelho
+ * saturados) por uma escala mais sóbria e desaturada, adequada a um painel
+ * operacional B2B. Como o app usa apenas @tailwindcss/vite (sem tailwind.config),
+ * a forma correta de trocar globalmente é sobrescrever os tokens de cor aqui —
+ * nenhuma classe utilitária (bg-blue-600, text-emerald-700 etc.) precisa mudar
+ * nos componentes, só o valor que ela resolve.
+ */
+@theme {
+  /* blue -> "Steel" (marca / ações primárias / links) */
+  --color-blue-50: #eff4f8;
+  --color-blue-100: #dce7f0;
+  --color-blue-200: #b9cfe1;
+  --color-blue-300: #8fb0cb;
+  --color-blue-400: #5d87a8;
+  --color-blue-500: #3d6d8f;
+  --color-blue-600: #2c5b7a;
+  --color-blue-700: #234a64;
+  --color-blue-800: #1c3a50;
+  --color-blue-900: #14293a;
+  --color-blue-950: #0d1c28;
+
+  /* emerald -> "Forest" (SLA cumprido / status positivo) */
+  --color-emerald-50: #edf5ef;
+  --color-emerald-100: #d7e9db;
+  --color-emerald-200: #afd3b8;
+  --color-emerald-300: #83b892;
+  --color-emerald-400: #5b9c6c;
+  --color-emerald-500: #3f7f51;
+  --color-emerald-600: #2f6640;
+  --color-emerald-700: #275434;
+  --color-emerald-800: #1f4229;
+  --color-emerald-900: #16301e;
+  --color-emerald-950: #0e1f13;
+
+  /* amber -> "Ochre" (aviso prévio / SLA em alerta) */
+  --color-amber-50: #fbf3e7;
+  --color-amber-100: #f5e3c4;
+  --color-amber-200: #e9c88c;
+  --color-amber-300: #dcac57;
+  --color-amber-400: #cc9333;
+  --color-amber-500: #b7791f;
+  --color-amber-600: #9c6519;
+  --color-amber-700: #7e5114;
+  --color-amber-800: #603e0f;
+  --color-amber-900: #422a0a;
+  --color-amber-950: #2b1a06;
+
+  /* red -> "Brick" (SLA vencido / erro) */
+  --color-red-50: #fbecea;
+  --color-red-100: #f4d2cc;
+  --color-red-200: #e6a399;
+  --color-red-300: #d5766a;
+  --color-red-400: #c34f40;
+  --color-red-500: #a8382a;
+  --color-red-600: #8e2e22;
+  --color-red-700: #732519;
+  --color-red-800: #591c13;
+  --color-red-900: #3e130d;
+  --color-red-950: #280c08;
+
+  /* indigo -> "Deep Navy" (usado só no degradê escuro do cabeçalho/simulador) */
+  --color-indigo-50: #eef2f6;
+  --color-indigo-100: #dbe3ea;
+  --color-indigo-200: #b6c6d3;
+  --color-indigo-300: #8ba4b8;
+  --color-indigo-400: #5d7f99;
+  --color-indigo-500: #3e5c78;
+  --color-indigo-600: #32495f;
+  --color-indigo-700: #283a4c;
+  --color-indigo-800: #1e2c3a;
+  --color-indigo-900: #16212c;
+  --color-indigo-950: #0a1420;
+}
