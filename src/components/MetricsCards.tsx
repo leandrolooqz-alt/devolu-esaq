@@ -33,11 +33,11 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({ items }) => {
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 mb-6">
       
       {/* Total Card */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+      <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 shadow-xs flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total em Controle</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">{total}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">{concluidos} concluído(s)</p>
+          <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Total em Controle</p>
+          <p className="text-2xl font-bold text-slate-100 mt-1">{total}</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">{concluidos} concluído(s)</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
           <Package className="w-5 h-5" />
@@ -45,11 +45,11 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({ items }) => {
       </div>
 
       {/* Dentro do Prazo */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+      <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 shadow-xs flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-emerald-600 uppercase tracking-wider">Dentro do SLA</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">{noPrazo}</p>
-          <p className="text-[11px] text-emerald-600 mt-0.5">Fluxo regular</p>
+          <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">Dentro do SLA</p>
+          <p className="text-2xl font-bold text-slate-100 mt-1">{noPrazo}</p>
+          <p className="text-[11px] text-emerald-400 mt-0.5">Fluxo regular</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
           <Clock className="w-5 h-5" />
@@ -57,11 +57,11 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({ items }) => {
       </div>
 
       {/* Em Alerta */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+      <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 shadow-xs flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-amber-600 uppercase tracking-wider">Aviso Prévio SLA</p>
-          <p className="text-2xl font-bold text-amber-700 mt-1">{emAlerta}</p>
-          <p className="text-[11px] text-amber-600 mt-0.5">Atingiu &gt;= 75% do tempo</p>
+          <p className="text-xs font-medium text-amber-400 uppercase tracking-wider">Aviso Prévio SLA</p>
+          <p className="text-2xl font-bold text-amber-400 mt-1">{emAlerta}</p>
+          <p className="text-[11px] text-amber-400 mt-0.5">Atingiu &gt;= 75% do tempo</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
           <AlertTriangle className="w-5 h-5" />
@@ -69,11 +69,11 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({ items }) => {
       </div>
 
       {/* Vencidos */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+      <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 shadow-xs flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-red-600 uppercase tracking-wider">SLAs Vencidos</p>
-          <p className="text-2xl font-bold text-red-700 mt-1">{vencidos}</p>
-          <p className="text-[11px] text-red-600 font-medium mt-0.5">Ação urgente requerida</p>
+          <p className="text-xs font-medium text-red-400 uppercase tracking-wider">SLAs Vencidos</p>
+          <p className="text-2xl font-bold text-red-400 mt-1">{vencidos}</p>
+          <p className="text-[11px] text-red-400 font-medium mt-0.5">Ação urgente requerida</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
           <AlertOctagon className="w-5 h-5" />
@@ -81,11 +81,11 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({ items }) => {
       </div>
 
       {/* Taxa de Compliance */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex items-center justify-between col-span-2 sm:col-span-1">
+      <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 shadow-xs flex items-center justify-between col-span-2 sm:col-span-1">
         <div>
-          <p className="text-xs font-medium text-indigo-600 uppercase tracking-wider">Compliance SLA</p>
-          <p className="text-2xl font-bold text-indigo-800 mt-1">{taxaSucesso}%</p>
-          <p className="text-[11px] text-indigo-600 mt-0.5">Taxa de atendimento no prazo</p>
+          <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Compliance SLA</p>
+          <p className="text-2xl font-bold text-indigo-300 mt-1">{taxaSucesso}%</p>
+          <p className="text-[11px] text-indigo-400 mt-0.5">Taxa de atendimento no prazo</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
           <CheckCircle2 className="w-5 h-5" />

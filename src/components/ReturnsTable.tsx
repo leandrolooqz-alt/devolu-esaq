@@ -57,32 +57,32 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+    <div className="bg-slate-900 rounded-2xl border border-slate-700 shadow-xs overflow-hidden">
       
       {/* Table Controls / Filters Header */}
-      <div className="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 sm:p-5 border-b border-slate-700 bg-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
         
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
           <input
             type="text"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             placeholder="Buscar por cotação, rastreio ou motivo..."
-            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 bg-white"
+            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm border border-slate-600 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 bg-slate-900"
           />
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <div className="flex items-center space-x-1.5 bg-white border border-slate-300 rounded-xl px-3 py-1.5">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-500 font-medium">Status:</span>
+          <div className="flex items-center space-x-1.5 bg-slate-900 border border-slate-600 rounded-xl px-3 py-1.5">
+            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <span className="text-slate-400 font-medium">Status:</span>
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="bg-transparent font-semibold text-slate-700 focus:outline-hidden"
+              className="bg-transparent font-semibold text-slate-200 focus:outline-hidden"
             >
               <option value="TODOS">Todos os Status</option>
               <option value="Pendente Ação">Pendente Ação</option>
@@ -92,13 +92,13 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
             </select>
           </div>
 
-          <div className="flex items-center space-x-1.5 bg-white border border-slate-300 rounded-xl px-3 py-1.5">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-500 font-medium">SLA:</span>
+          <div className="flex items-center space-x-1.5 bg-slate-900 border border-slate-600 rounded-xl px-3 py-1.5">
+            <Clock className="w-3.5 h-3.5 text-slate-500" />
+            <span className="text-slate-400 font-medium">SLA:</span>
             <select
               value={urgencyFilter}
               onChange={e => setUrgencyFilter(e.target.value)}
-              className="bg-transparent font-semibold text-slate-700 focus:outline-hidden"
+              className="bg-transparent font-semibold text-slate-200 focus:outline-hidden"
             >
               <option value="TODOS">Todos os SLAs</option>
               <option value="VENCIDO">🚨 Somente Vencidos</option>
@@ -113,7 +113,7 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
       {/* Table Content */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs sm:text-sm">
-          <thead className="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[11px]">
+          <thead className="bg-slate-800/80 border-b border-slate-700 text-slate-300 font-semibold uppercase tracking-wider text-[11px]">
             <tr>
               <th className="py-3 px-4">Cotação</th>
               <th className="py-3 px-4">Rastreio & Motivo</th>
@@ -124,13 +124,13 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
               <th className="py-3 px-4 text-right">Ações</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 text-slate-700">
+          <tbody className="divide-y divide-slate-700 text-slate-200">
             {filteredItems.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-slate-400">
+                <td colSpan={7} className="py-12 text-center text-slate-500">
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <Truck className="w-8 h-8 text-slate-300" />
-                    <p className="font-medium text-slate-600">Nenhuma devolução encontrada.</p>
+                    <Truck className="w-8 h-8 text-slate-600" />
+                    <p className="font-medium text-slate-300">Nenhuma devolução encontrada.</p>
                     <p className="text-xs">Tente ajustar os filtros de busca ou cadastre uma nova devolução.</p>
                   </div>
                 </td>
@@ -140,11 +140,11 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
                 const sla = calculateSlaStatus(item);
 
                 // Urgency row highlight style
-                let rowBg = 'hover:bg-slate-50/80';
+                let rowBg = 'hover:bg-slate-800/60';
                 if (sla.nivelUrgencia === 'VENCIDO') {
-                  rowBg = 'bg-red-50/30 hover:bg-red-50/60';
+                  rowBg = 'bg-red-950/40 hover:bg-red-950/60';
                 } else if (sla.nivelUrgencia === 'ALERTA') {
-                  rowBg = 'bg-amber-50/30 hover:bg-amber-50/60';
+                  rowBg = 'bg-amber-950/30 hover:bg-amber-950/50';
                 }
 
                 return (
@@ -159,21 +159,21 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
 
                     {/* Rastreio & Motivo */}
                     <td className="py-3.5 px-4">
-                      <div className="font-mono text-slate-800 text-xs flex items-center gap-1">
-                        <Truck className="w-3.5 h-3.5 text-slate-400" />
+                      <div className="font-mono text-slate-100 text-xs flex items-center gap-1">
+                        <Truck className="w-3.5 h-3.5 text-slate-500" />
                         {item.codigoRastreio}
                       </div>
-                      <div className="text-xs font-medium text-slate-600 mt-0.5">
+                      <div className="text-xs font-medium text-slate-300 mt-0.5">
                         {item.motivoDevolucao}
                       </div>
                     </td>
 
                     {/* Data de Entrada & Responsáveis */}
                     <td className="py-3.5 px-4">
-                      <div className="text-xs text-slate-600">
+                      <div className="text-xs text-slate-300">
                         {new Date(item.dataEntrada).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}
                       </div>
-                      <div className="flex items-center gap-1 text-[11px] text-slate-400 mt-0.5" title={item.emailsResponsaveis.join(', ')}>
+                      <div className="flex items-center gap-1 text-[11px] text-slate-500 mt-0.5" title={item.emailsResponsaveis.join(', ')}>
                         <Mail className="w-3 h-3" />
                         <span>{item.emailsResponsaveis.length} responsável(is)</span>
                       </div>
@@ -196,12 +196,12 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
                         </div>
                       ) : (
                         <div>
-                          <div className={`flex items-center font-semibold text-xs ${sla.respostaAlerta ? 'text-amber-700' : 'text-slate-700'}`}>
+                          <div className={`flex items-center font-semibold text-xs ${sla.respostaAlerta ? 'text-amber-400' : 'text-slate-200'}`}>
                             {sla.respostaAlerta && <AlertTriangle className="w-3.5 h-3.5 mr-1 text-amber-500 animate-pulse" />}
                             <span>{formatTimeRemaining(sla.respostaMinutosRestantes)}</span>
                           </div>
                           {/* Progress Bar */}
-                          <div className="w-24 bg-slate-200 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                          <div className="w-24 bg-slate-700 h-1.5 rounded-full mt-1.5 overflow-hidden">
                             <div 
                               className={`h-full transition-all ${sla.respostaAlerta ? 'bg-amber-500' : 'bg-blue-600'}`}
                               style={{ width: `${Math.min(100, sla.respostaPercentualConsumido)}%` }}
@@ -228,12 +228,12 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
                         </div>
                       ) : (
                         <div>
-                          <div className={`flex items-center font-semibold text-xs ${sla.resolucaoAlerta ? 'text-amber-700' : 'text-slate-700'}`}>
+                          <div className={`flex items-center font-semibold text-xs ${sla.resolucaoAlerta ? 'text-amber-400' : 'text-slate-200'}`}>
                             {sla.resolucaoAlerta && <AlertTriangle className="w-3.5 h-3.5 mr-1 text-amber-500" />}
                             <span>{formatHoursRemaining(sla.resolucaoHorasRestantes)}</span>
                           </div>
                           {/* Progress Bar */}
-                          <div className="w-24 bg-slate-200 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                          <div className="w-24 bg-slate-700 h-1.5 rounded-full mt-1.5 overflow-hidden">
                             <div 
                               className={`h-full transition-all ${sla.resolucaoAlerta ? 'bg-amber-500' : 'bg-indigo-600'}`}
                               style={{ width: `${Math.min(100, sla.resolucaoPercentualConsumido)}%` }}
@@ -288,10 +288,10 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
                         {/* Detalhes Drawer Button */}
                         <button
                           onClick={() => onSelectReturn(item)}
-                          className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
                         >
                           <span>Detalhes</span>
-                          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                          <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
                         </button>
                       </div>
                     </td>
