@@ -11,12 +11,10 @@ interface ReturnFormModalProps {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const MOTIVOS_LIST: MotivoDevolucao[] = [
-  'Defeito de Fabricação',
-  'Avaria no Transporte',
+  'Defeito',
+  'Manutenção',
   'Produto Incorreto',
-  'Arrependimento / Desistência',
-  'Tamanho ou Modelo Incompatível',
-  'Atraso na Entrega',
+  'Devolução',
   'Outros'
 ];
 
