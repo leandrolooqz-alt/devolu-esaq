@@ -141,6 +141,24 @@ export default function App() {
     }));
   };
 
+  // Dispara o envio real do e-mail via nossa função serverless (/api/send-alert-email),
+  // que por sua vez chama o Resend. Fire-and-forget: não bloqueia a varredura, e erros
+  // (ex: chave da API não configurada ainda) só vão pro console, sem quebrar a tela.
+  const sendEmailAlert = (to: string[], subject: string, html: string) => {
+    fetch('/api/send-alert-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, subject, html })
+    })
+      .then(async res => {
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          console.error('Falha ao enviar e-mail de alerta:', err);
+        }
+      })
+      .catch(err => console.error('Erro de rede ao enviar e-mail de alerta:', err));
+  };
+
   // Varredura automática de gatilhos de SLA: roda em segundo plano (ver useEffect
   // abaixo) e dispara os alertas de e-mail quando um prazo entra em aviso prévio
   // ou vence, sem precisar de nenhuma tela de simulação manual.
@@ -170,6 +188,7 @@ export default function App() {
               assunto,
               corpoHtml
             });
+            sendEmailAlert(item.emailsResponsaveis, assunto, corpoHtml);
           }
         } else if (sla.respostaAlerta) {
           const alreadySent = newEmailLogs.some(e => e.tipoSla === 'SLA_RESPOSTA' && e.tipoAlerta === 'AVISO_PREVIO');
@@ -186,6 +205,7 @@ export default function App() {
               assunto,
               corpoHtml
             });
+            sendEmailAlert(item.emailsResponsaveis, assunto, corpoHtml);
           }
         }
       }
@@ -207,6 +227,7 @@ export default function App() {
               assunto,
               corpoHtml
             });
+            sendEmailAlert(item.emailsResponsaveis, assunto, corpoHtml);
           }
         } else if (sla.resolucaoAlerta) {
           const alreadySent = newEmailLogs.some(e => e.tipoSla === 'SLA_RESOLUCAO' && e.tipoAlerta === 'AVISO_PREVIO');
@@ -223,6 +244,7 @@ export default function App() {
               assunto,
               corpoHtml
             });
+            sendEmailAlert(item.emailsResponsaveis, assunto, corpoHtml);
           }
         }
       }
