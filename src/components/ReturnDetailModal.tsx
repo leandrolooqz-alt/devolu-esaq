@@ -12,25 +12,34 @@ import {
   Truck, 
   Calendar,
   AlertOctagon,
-  ShieldCheck
+  ShieldCheck,
+  Plus
 } from 'lucide-react';
 import { ReturnCase, ActionLog, StatusDevolucao } from '../types';
 import { calculateSlaStatus } from '../utils/slaCalculations';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface ReturnDetailModalProps {
   item: ReturnCase | null;
   onClose: () => void;
   onAddLog: (returnId: string, descricao: string, novoStatus?: StatusDevolucao) => void;
+  onAddEmail: (returnId: string, email: string) => void;
+  onRemoveEmail: (returnId: string, email: string) => void;
 }
 
 export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
   item,
   onClose,
-  onAddLog
+  onAddLog,
+  onAddEmail,
+  onRemoveEmail
 }) => {
   const [newNote, setNewNote] = useState('');
   const [newStatus, setNewStatus] = useState<StatusDevolucao | ''>('');
   const [selectedEmailPreview, setSelectedEmailPreview] = useState<string | null>(null);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   if (!item) return null;
 
@@ -43,6 +52,23 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
     onAddLog(item.id, newNote.trim(), newStatus || undefined);
     setNewNote('');
     setNewStatus('');
+  };
+
+  const handleAddEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = newEmail.trim().toLowerCase();
+    if (!trimmed) return;
+    if (!EMAIL_REGEX.test(trimmed)) {
+      setEmailError('Insira um e-mail válido.');
+      return;
+    }
+    if (item.emailsResponsaveis.includes(trimmed)) {
+      setEmailError('Este e-mail já está na lista.');
+      return;
+    }
+    onAddEmail(item.id, trimmed);
+    setNewEmail('');
+    setEmailError('');
   };
 
   return (
@@ -70,97 +96,8 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
         {/* Modal Body Grid */}
         <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[80vh] overflow-y-auto">
           
-          {/* Column 1 & 2: SLA Status, Action Log & Timeline */}
+          {/* Column 1 & 2: Descrição / Ação & Timeline (mais espaço, sem os cards de SLA) */}
           <div className="lg:col-span-2 space-y-6">
-            
-            {/* SLA Status Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              
-              {/* SLA Resposta */}
-              <div className={`p-4 rounded-xl border ${
-                item.dataPrimeiraAcao 
-                  ? 'bg-emerald-50/50 border-emerald-200' 
-                  : sla.respostaVencida 
-                  ? 'bg-red-50/50 border-red-200' 
-                  : sla.respostaAlerta 
-                  ? 'bg-amber-50/50 border-amber-200' 
-                  : 'bg-slate-800/60 border-slate-700'
-              }`}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-200">SLA 1ª Resposta ({item.slaRespostaHoras}h)</span>
-                  {item.dataPrimeiraAcao ? (
-                    <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Cumprido
-                    </span>
-                  ) : sla.respostaVencida ? (
-                    <span className="text-xs text-red-700 font-bold flex items-center gap-1">
-                      <AlertOctagon className="w-3.5 h-3.5" /> Vencido
-                    </span>
-                  ) : sla.respostaAlerta ? (
-                    <span className="text-xs text-amber-700 font-semibold flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> Em Andamento
-                    </span>
-                  ) : (
-                    <span className="text-xs text-slate-300 font-semibold flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> Em Andamento
-                    </span>
-                  )}
-                </div>
-                <div className="text-xs text-slate-300 mt-2">
-                  {item.dataPrimeiraAcao ? (
-                    <p>1ª Ação registrada em: <strong>{new Date(item.dataPrimeiraAcao).toLocaleString('pt-BR')}</strong></p>
-                  ) : (
-                    <>
-                      <p>Prazo limite: <strong>{new Date(sla.dataLimiteResposta).toLocaleString('pt-BR')}</strong></p>
-                      <p className="mt-1">Consumido: <strong>{Math.min(100, sla.respostaPercentualConsumido)}%</strong> do tempo</p>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* SLA Resolução */}
-              <div className={`p-4 rounded-xl border ${
-                item.status === 'Concluído' 
-                  ? 'bg-emerald-50/50 border-emerald-200' 
-                  : sla.resolucaoVencida 
-                  ? 'bg-red-50/50 border-red-200' 
-                  : sla.resolucaoAlerta 
-                  ? 'bg-amber-50/50 border-amber-200' 
-                  : 'bg-slate-800/60 border-slate-700'
-              }`}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-200">SLA Resolução ({item.slaResolucaoDias} dias)</span>
-                  {item.status === 'Concluído' ? (
-                    <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5" /> Concluído
-                    </span>
-                  ) : sla.resolucaoVencida ? (
-                    <span className="text-xs text-red-700 font-bold flex items-center gap-1">
-                      <AlertOctagon className="w-3.5 h-3.5" /> Vencido
-                    </span>
-                  ) : sla.resolucaoAlerta ? (
-                    <span className="text-xs text-amber-700 font-semibold flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> Em Andamento
-                    </span>
-                  ) : (
-                    <span className="text-xs text-slate-300 font-semibold flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> Em Andamento
-                    </span>
-                  )}
-                </div>
-                <div className="text-xs text-slate-300 mt-2">
-                  {item.status === 'Concluído' ? (
-                    <p>Resolvido em: <strong>{item.dataResolucao ? new Date(item.dataResolucao).toLocaleString('pt-BR') : 'Concluído'}</strong></p>
-                  ) : (
-                    <>
-                      <p>Prazo limite: <strong>{new Date(sla.dataLimiteResolucao).toLocaleDateString('pt-BR')}</strong></p>
-                      <p className="mt-1">Consumido: <strong>{Math.min(100, sla.resolucaoPercentualConsumido)}%</strong> do tempo</p>
-                    </>
-                  )}
-                </div>
-              </div>
-
-            </div>
 
             {/* Form to add action log */}
             <form onSubmit={handleAddAction} className="bg-slate-800/60 p-4 rounded-xl border border-slate-700 space-y-3">
@@ -169,23 +106,24 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
                 Registrar Atualização / Ação no Chamado
               </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="sm:col-span-2">
-                  <input
-                    type="text"
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <textarea
                     value={newNote}
                     onChange={e => setNewNote(e.target.value)}
-                    placeholder="Descreva a atualização feita (ex: etiqueta emitida, vistoria concluída)..."
-                    className="w-full px-3 py-2 text-xs border border-slate-600 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 bg-slate-900"
+                    placeholder="Descreva a atualização feita (ex: etiqueta emitida, vistoria concluída, produto recebido no CD)..."
+                    rows={4}
+                    className="w-full px-3 py-2.5 text-sm border border-slate-600 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 bg-slate-900 resize-y"
                   />
                 </div>
-                <div>
+                <div className="sm:max-w-xs">
                   <select
                     value={newStatus}
                     onChange={e => setNewStatus(e.target.value as StatusDevolucao)}
                     className="w-full px-3 py-2 text-xs border border-slate-600 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 bg-slate-900 font-medium"
                   >
                     <option value="">Status Atual: {item.status}</option>
+                    <option value="Em Trânsito">Em Trânsito</option>
                     <option value="Em Tratativa">Em Tratativa</option>
                     <option value="Aguardando Cliente">Aguardando Cliente</option>
                     <option value="Aguardando Resposta do Fornecedor">Aguardando Resposta do Fornecedor</option>
@@ -215,16 +153,16 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
                 Histórico de Auditoria ({item.logs.length} eventos)
               </h3>
 
-              <div className="relative border-l-2 border-slate-700 ml-3 pl-4 space-y-4 text-xs">
+              <div className="relative border-l-2 border-slate-700 ml-3 pl-4 space-y-4 text-sm">
                 {item.logs.map((log, idx) => (
                   <div key={log.id || idx} className="relative group">
                     <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white ring-2 ring-slate-700" />
-                    <div className="bg-slate-900 p-3 rounded-lg border border-slate-700 shadow-2xs">
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                    <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 shadow-2xs">
+                      <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
                         <span className="font-semibold text-slate-100">{log.usuario}</span>
                         <span>{new Date(log.data).toLocaleString('pt-BR')}</span>
                       </div>
-                      <p className="text-slate-200">{log.descricao}</p>
+                      <p className="text-slate-200 leading-relaxed">{log.descricao}</p>
                     </div>
                   </div>
                 ))}
@@ -242,13 +180,39 @@ export const ReturnDetailModal: React.FC<ReturnDetailModalProps> = ({
                 <Mail className="w-3.5 h-3.5 text-blue-600" />
                 E-mails para Alertas ({item.emailsResponsaveis.length})
               </h3>
-              <ul className="space-y-1 text-xs text-slate-300 font-mono">
+              <ul className="space-y-1 text-xs text-slate-300 font-mono mb-3">
                 {item.emailsResponsaveis.map(e => (
-                  <li key={e} className="bg-slate-900 px-2.5 py-1 rounded border border-slate-700 break-all">
-                    {e}
+                  <li key={e} className="bg-slate-900 px-2.5 py-1 rounded border border-slate-700 break-all flex items-center justify-between gap-2">
+                    <span className="truncate">{e}</span>
+                    <button
+                      type="button"
+                      onClick={() => onRemoveEmail(item.id, e)}
+                      title="Remover e-mail"
+                      className="text-slate-500 hover:text-red-400 shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
                   </li>
                 ))}
               </ul>
+
+              <form onSubmit={handleAddEmailSubmit} className="flex gap-1.5">
+                <input
+                  type="email"
+                  value={newEmail}
+                  onChange={e => { setNewEmail(e.target.value); setEmailError(''); }}
+                  placeholder="Adicionar e-mail..."
+                  className="flex-1 min-w-0 px-2.5 py-1.5 text-xs border border-slate-600 rounded-lg bg-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                />
+                <button
+                  type="submit"
+                  className="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg px-2.5 shrink-0"
+                  title="Adicionar e-mail"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </form>
+              {emailError && <p className="text-[11px] text-red-400 mt-1">{emailError}</p>}
             </div>
 
             {/* Email History Logs */}

@@ -8,6 +8,7 @@ export type MotivoDevolucao =
   | 'Outros';
 
 export type StatusDevolucao = 
+  | 'Em Trânsito'
   | 'Pendente Ação'
   | 'Em Tratativa'
   | 'Aguardando Cliente'
@@ -81,4 +82,3 @@ export interface SlaCalculatedStatus {
   // Status unificado
   nivelUrgencia: 'OK' | 'ALERTA' | 'VENCIDO' | 'CONCLUIDO';
 }
-

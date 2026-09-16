@@ -252,6 +252,8 @@ export const ReturnsTable: React.FC<ReturnsTableProps> = ({
                           ? 'bg-blue-100 text-blue-800 border-blue-300'
                           : item.status === 'Aguardando Cliente'
                           ? 'bg-purple-100 text-purple-800 border-purple-300'
+                          : item.status === 'Em Trânsito'
+                          ? 'bg-indigo-100 text-indigo-800 border-indigo-300'
                           : 'bg-amber-100 text-amber-800 border-amber-300'
                       }`}>
                         {item.status}

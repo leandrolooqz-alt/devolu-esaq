@@ -80,7 +80,7 @@ export default function App() {
       return {
         ...r,
         dataPrimeiraAcao: nowIso,
-        status: r.status === 'Pendente Ação' ? 'Em Tratativa' : r.status,
+        status: (r.status === 'Pendente Ação' || r.status === 'Em Trânsito') ? 'Em Tratativa' : r.status,
         logs: [actionLog, ...r.logs]
       };
     }));
@@ -138,6 +138,24 @@ export default function App() {
       }
 
       return updatedCase;
+    }));
+  };
+
+  const handleAddEmail = (returnId: string, email: string) => {
+    setReturns(prev => prev.map(r => {
+      if (r.id !== returnId) return r;
+      const updated = { ...r, emailsResponsaveis: [...r.emailsResponsaveis, email] };
+      if (selectedReturn && selectedReturn.id === returnId) setSelectedReturn(updated);
+      return updated;
+    }));
+  };
+
+  const handleRemoveEmail = (returnId: string, email: string) => {
+    setReturns(prev => prev.map(r => {
+      if (r.id !== returnId) return r;
+      const updated = { ...r, emailsResponsaveis: r.emailsResponsaveis.filter(e => e !== email) };
+      if (selectedReturn && selectedReturn.id === returnId) setSelectedReturn(updated);
+      return updated;
     }));
   };
 
@@ -321,6 +339,8 @@ export default function App() {
         item={selectedReturn}
         onClose={() => setSelectedReturn(null)}
         onAddLog={handleAddLog}
+        onAddEmail={handleAddEmail}
+        onRemoveEmail={handleRemoveEmail}
       />
 
     </div>
